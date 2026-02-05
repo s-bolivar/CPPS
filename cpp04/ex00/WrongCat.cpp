@@ -1,46 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                         :+:      :+:    :+:   */
+/*   WrongCat.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 14:07:28 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/05 22:22:07 by sbolivar         ###   ########.fr       */
+/*   Created: 2026/02/05 22:47:13 by sbolivar          #+#    #+#             */
+/*   Updated: 2026/02/05 22:53:31 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "WrongCat.hpp"
 
-Animal::Animal()
+WrongCat::WrongCat()
 {
-	type = "giraffe";
+	type = "Cat";
 	std::cout << type << "has been created" << std::endl;
 }
 
-Animal::Animal(Animal const &other)
+WrongCat::WrongCat(WrongCat const &other) : WrongAnimal(other)
 {
 	*this = other;
 }
 
-Animal &Animal::operator=(Animal const &other)
+WrongCat &WrongCat::operator=(WrongCat const &other)
 {
 	if (this != &other)
 		type = other.type;
 	return (*this);
 }
 
-Animal::~Animal()
+WrongCat::~WrongCat()
 {
 	std::cout << type << "has been destroyed" << std::endl;
 }
 
-void	Animal::makeSound() const
+void	WrongCat::makeSound() const
 {
-	std::cout << "this animal dont make noise" << std::endl;
-}
-
-const std::string &Animal::getType() const
-{
-	return (type);
+	std::cout << "Miau" << std::endl;
 }
