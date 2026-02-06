@@ -1,46 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.cpp                                    :+:      :+:    :+:   */
+/*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 22:47:16 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/06 17:19:10 by sbolivar         ###   ########.fr       */
+/*   Created: 2026/02/05 14:07:28 by sbolivar          #+#    #+#             */
+/*   Updated: 2026/02/06 17:18:21 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "WrongAnimal.hpp"
+#include "Dog.hpp"
 
-WrongAnimal::WrongAnimal()
+Dog::Dog()
 {
-	type = "giraffe";
+	type = "Dog";
+	brain = new Brain();
 	std::cout << type << " has been created" << std::endl;
 }
 
-WrongAnimal::WrongAnimal(WrongAnimal const &other)
+Dog::Dog(Dog const &other) : Animal(other)
 {
 	*this = other;
+	brain = new Brain(*other.brain);
 }
 
-WrongAnimal &WrongAnimal::operator=(WrongAnimal const &other)
+Dog &Dog::operator=(Dog const &other)
 {
 	if (this != &other)
+	{
 		type = other.type;
+		delete brain;
+		brain = new Brain(*other.brain);
+	}
 	return (*this);
 }
 
-WrongAnimal::~WrongAnimal()
+Dog::~Dog()
 {
+	delete brain;
 	std::cout << type << " has been destroyed" << std::endl;
 }
 
-void	WrongAnimal::makeSound() const
+void	Dog::makeSound() const
 {
-	std::cout << "this animal dont make noise" << std::endl;
+	std::cout << "Guau" << std::endl;
 }
 
-const std::string &WrongAnimal::getType() const
+Brain *Dog::getBrain()
 {
-	return (type);
+	return (brain);
 }

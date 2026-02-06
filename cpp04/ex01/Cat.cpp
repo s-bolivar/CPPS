@@ -1,46 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.cpp                                    :+:      :+:    :+:   */
+/*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 22:47:16 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/06 17:19:10 by sbolivar         ###   ########.fr       */
+/*   Created: 2026/02/05 14:07:28 by sbolivar          #+#    #+#             */
+/*   Updated: 2026/02/06 17:18:27 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "WrongAnimal.hpp"
+#include "Cat.hpp"
 
-WrongAnimal::WrongAnimal()
+Cat::Cat()
 {
-	type = "giraffe";
+	brain = new Brain();
+	type = "Cat";
 	std::cout << type << " has been created" << std::endl;
 }
 
-WrongAnimal::WrongAnimal(WrongAnimal const &other)
+Cat::Cat(Cat const &other) : Animal(other)
 {
+	brain = new Brain(*other.brain);
 	*this = other;
 }
 
-WrongAnimal &WrongAnimal::operator=(WrongAnimal const &other)
+Cat &Cat::operator=(Cat const &other)
 {
 	if (this != &other)
+	{
 		type = other.type;
+		delete brain;
+		brain = new Brain(*other.brain);
+	}
 	return (*this);
 }
 
-WrongAnimal::~WrongAnimal()
+Cat::~Cat()
 {
+	delete brain;
 	std::cout << type << " has been destroyed" << std::endl;
 }
 
-void	WrongAnimal::makeSound() const
+void	Cat::makeSound() const
 {
-	std::cout << "this animal dont make noise" << std::endl;
+	std::cout << "Miau" << std::endl;
 }
 
-const std::string &WrongAnimal::getType() const
+Brain *Cat::getBrain()
 {
-	return (type);
+	return (brain);
 }

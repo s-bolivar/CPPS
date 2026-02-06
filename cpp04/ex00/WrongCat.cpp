@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 22:47:13 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/05 22:53:31 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/02/06 17:19:16 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 WrongCat::WrongCat()
 {
 	type = "Cat";
-	std::cout << type << "has been created" << std::endl;
+	std::cout << type << " has been created" << std::endl;
 }
 
 WrongCat::WrongCat(WrongCat const &other) : WrongAnimal(other)
@@ -32,7 +32,7 @@ WrongCat &WrongCat::operator=(WrongCat const &other)
 
 WrongCat::~WrongCat()
 {
-	std::cout << type << "has been destroyed" << std::endl;
+	std::cout << type << " has been destroyed" << std::endl;
 }
 
 void	WrongCat::makeSound() const
