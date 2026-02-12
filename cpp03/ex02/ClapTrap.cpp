@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 14:45:32 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/04 12:48:21 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/02/12 10:50:42 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,27 @@ ClapTrap::~ClapTrap()
 void ClapTrap::attack(const std::string& target)
 {
 	if (hit_points == 0)
-		std::cout << getname() << " have 0 hit points :(" << std::endl;
+	{
+		std::cout << name << " have 0 hit points :(" << std::endl;
+		return ;
+	}
 	if (energy_points == 0)
-		std::cout << getname() << " have 0 energy points :(" << std::endl;
+	{
+		std::cout << name << " have 0 energy points :(" << std::endl;
+		return ;
+	}
 	else
 	{
-		energy_points--;
+		if (energy_points > 0)
+			energy_points--;
 		std::cout << getname() << " atacks " << target  << ", causing " << getdamage() << " points of damage" << std::endl;
 	}
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	hit_points -= amount;
+	for (int i = amount; hit_points > 0 && i > 0; i--)
+		hit_points--;
 	std::cout << getname() << " recived " << amount << " damage points" << std::endl;
 	std::cout << getname() << " have " << hit_points << " hit points now" << std::endl;
 }
@@ -99,7 +107,8 @@ void ClapTrap::beRepaired(unsigned int amount)
 		std::cout << name << " have 0 energy points :(" << std::endl;
 		return ;
 	}
-	energy_points--;
+	if (energy_points > 0)
+		energy_points--;
 	hit_points += amount;
 	std::cout << getname() << " was repaired with " << amount << " hit points" << std::endl;
 	std::cout << name << " have " << energy_points << " energy points now" << std::endl;

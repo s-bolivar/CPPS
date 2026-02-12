@@ -1,4 +1,4 @@
-EXEC = ScavTrap
+EXEC = FragTrap
 INCLUDE = ScavTrap.hpp
 
 CC = c++
