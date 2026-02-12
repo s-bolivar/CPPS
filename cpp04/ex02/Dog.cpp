@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 14:07:28 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/02/06 17:18:21 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/02/12 11:16:53 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Dog::Dog()
 	std::cout << type << " has been created" << std::endl;
 }
 
-Dog::Dog(Dog const &other) : Animal(other)
+Dog::Dog(Dog const &other)
 {
 	*this = other;
 	brain = new Brain(*other.brain);
