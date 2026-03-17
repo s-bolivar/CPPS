@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 19:19:38 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/17 16:34:19 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/03/17 23:09:35 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,39 @@ void    Bureaucrat::IncrementGrade()
 void    Bureaucrat::DecrementGrade()
 {
     grade--;
+}
+
+void    Bureaucrat::signAForm(AForm &AForm)
+{
+    try
+    {
+        AForm.beSigned(*this);
+    }
+    catch (std::exception& e)
+    {
+        std::cout << name << " couldn't sign "
+                  << AForm.getName()
+                  << " because "
+                  << e.what()
+                  << std::endl;
+    }
+}
+
+void    Bureaucrat::executeAForm(AForm &AForm)
+{
+    try
+    {
+        AForm.execute(*this);
+        std::cout << name << " execute " << AForm.getName() << std::endl;
+    }
+    catch (std::exception& e)
+    {
+        std::cout << name << " couldn't execute "
+                  << AForm.getName()
+                  << " because "
+                  << e.what()
+                  << std::endl;
+    }
 }
 
 std::ostream&	operator<<(std::ostream &o, Bureaucrat const &bureaucraft)
