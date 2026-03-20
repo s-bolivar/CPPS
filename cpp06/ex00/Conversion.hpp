@@ -3,6 +3,18 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <iomanip>
+
+enum types
+{
+    VOID,
+    CHAR,
+    INT,
+    DOUBLE,
+    FLOAT,
+    SPECIAL
+};
 
 class ScalarConverter
 {
