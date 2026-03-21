@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 22:45:03 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/20 18:22:16 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/03/21 15:52:34 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void printFloat(float c, bool conf)
 {
     std::cout << "float: ";
     if (conf)
-        std::cout << c << 'f' << std::endl;
+        std::cout << std::fixed << std::setprecision(1) << c << 'f' << std::endl;
     else
         std::cout << "imposible" << std::endl;
 }
@@ -25,7 +25,7 @@ void printDouble(double c, bool conf)
 {
     std::cout << "double: ";
     if (conf)
-        std::cout << c << std::endl;
+        std::cout << std::fixed << std::setprecision(1) << c << std::endl;
     else
         std::cout << "imposible" << std::endl;
 }
@@ -43,7 +43,12 @@ void printChar(char c, bool conf)
 {
     std::cout << "char: ";
     if (conf)
-        std::cout << c << std::endl;
+    {
+        if (!std::iscntrl(c))
+            std::cout << c << std::endl;
+        else
+            std::cout << "non displayable" << std::endl;
+    }
     else
         std::cout << "imposible" << std::endl;
 }
@@ -51,7 +56,7 @@ void printChar(char c, bool conf)
 void toSpecial(std::string str)
 {
     float n = atof(str.c_str());
-    printChar(str[0], false);
+    printChar(static_cast<char>(n), false);
     printInt(static_cast<int>(n), false);
     printDouble(static_cast<double>(n), true);
     printFloat(n, true);
@@ -60,7 +65,7 @@ void toSpecial(std::string str)
 void toFloat(std::string str)
 {
     float n = atof(str.c_str());
-    printChar(str[0], false);
+    printChar(static_cast<char>(n), true);
     printInt(static_cast<int>(n), true);
     printDouble(static_cast<double>(n), true);
     printFloat(n, true);
@@ -69,7 +74,7 @@ void toFloat(std::string str)
 void toDouble(std::string str)
 {
     double n = atof(str.c_str());
-    printChar(str[0], false);
+    printChar(static_cast<char>(n), true);
     printInt(static_cast<int>(n), true);
     printDouble(n, true);
     printFloat(static_cast<float>(n), true);
@@ -91,10 +96,7 @@ void toInt(std::string str)
     int i;
 
     i = atoi(str.c_str());
-    if (str.length() == 1)
-        printChar(str[0], true);
-    else
-        printChar(str[0], false);
+    printChar(static_cast<char>(i), true);
     printInt(i, true);
     printDouble(static_cast<double>(i), true);
     printFloat(static_cast<float>(i), true);
