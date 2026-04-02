@@ -1,7 +1,7 @@
 #ifndef RPN_HPP
 #define RPN_HPP
 
-#include <vector>
+#include <stack>
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -9,8 +9,7 @@
 class RPN
 {
     private:
-        std::vector<int>    cont;
-        std::vector<int>::iterator  it;
+        std::stack<int>     stack;
     public:
         RPN();
         RPN(const RPN &);
