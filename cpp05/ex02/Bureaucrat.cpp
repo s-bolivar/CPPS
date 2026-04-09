@@ -6,11 +6,11 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 19:19:38 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/18 17:44:01 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/09 14:21:29 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucraft.hpp"
+#include "Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat() : name("Ricardo"), grade(1)
 {
@@ -65,11 +65,15 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
 
 void    Bureaucrat::IncrementGrade()
 {
-    grade++;
+    grade--;
+	if (grade < 1)
+        throw Bureaucrat::GradeTooHighException();
 }
 void    Bureaucrat::DecrementGrade()
 {
-    grade--;
+    grade++;
+	if (grade > 150)
+        throw Bureaucrat::GradeTooLowException();
 }
 
 void    Bureaucrat::signAForm(AForm &AForm)

@@ -6,11 +6,11 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 19:19:40 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/17 23:53:09 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/09 14:22:00 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucraft.hpp"
+#include "Bureaucrat.hpp"
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
@@ -29,10 +29,11 @@ int main()
         b.signAForm(r);
         b.executeAForm(r); 
         std::cout << "---------------------------------------------------------------------------" << std::endl;
-        Bureaucrat c("Brenda", 70);
+        Bureaucrat c("Brenda", 15);
         Shrubberycreationform s("Home");
         c.signAForm(s);
         c.executeAForm(s); 
+        std::cout << "---------------------------------------------------------------------------" << std::endl;
     }
     catch (std::exception &e)
     {

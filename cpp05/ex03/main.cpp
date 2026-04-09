@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 19:19:40 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/18 17:47:07 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/09 14:36:36 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ int main()
     rrf = someRandomIntern.makeForm("presidential pardon", "Bender");
     try
     {
-        Bureaucrat a("Santi", 100);
-        Presidentialpardonform p("Noam");
+        Bureaucrat a("Santi", 10);
+        a.signAForm(*rrf);
         rrf->execute(a);
-        p.execute(a);
     }
     catch (std::exception &e)
     {

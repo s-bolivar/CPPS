@@ -1,7 +1,7 @@
 #ifndef AFORM
 #define AFORM
 
-#include "Bureaucraft.hpp"
+#include "Bureaucrat.hpp"
 
 class Bureaucrat;
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/14 19:19:38 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/18 17:43:23 by sbolivar         ###   ########.fr       */
+/*   Created: 2026/04/09 14:20:45 by sbolivar          #+#    #+#             */
+/*   Updated: 2026/04/09 14:24:47 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,15 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
 
 void    Bureaucrat::IncrementGrade()
 {
-    grade++;
+    grade--;
+	if (grade < 1)
+        throw Bureaucrat::GradeTooHighException();
 }
 void    Bureaucrat::DecrementGrade()
 {
-    grade--;
+    grade++;
+	if (grade > 150)
+        throw Bureaucrat::GradeTooLowException();
 }
 
 void    Bureaucrat::signAForm(AForm &AForm)

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bureaucraft.cpp                                    :+:      :+:    :+:   */
+/*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/14 19:19:38 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/18 17:44:27 by sbolivar         ###   ########.fr       */
+/*   Created: 2026/04/09 13:12:14 by sbolivar          #+#    #+#             */
+/*   Updated: 2026/04/09 13:46:42 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucraft.hpp"
+#include "Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat() : name("Ricardo"), grade(1)
 {
@@ -65,11 +65,15 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
 
 void    Bureaucrat::IncrementGrade()
 {
-    grade++;
+    grade--;
+	if (grade < 1)
+        throw Bureaucrat::GradeTooHighException();
 }
 void    Bureaucrat::DecrementGrade()
 {
-    grade--;
+    grade++;
+	if (grade > 150)
+        throw Bureaucrat::GradeTooLowException();
 }
 
 std::ostream&	operator<<(std::ostream &o, Bureaucrat const &bureaucraft)

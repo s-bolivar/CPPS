@@ -1,7 +1,7 @@
 #ifndef FORM
 #define FORM
 
-#include "Bureaucraft.hpp"
+#include "Bureaucrat.hpp"
 
 class Bureaucrat;
 

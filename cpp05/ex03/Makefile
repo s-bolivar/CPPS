@@ -1,4 +1,4 @@
-EXEC = AForm
+EXEC = Intern
 INCLUDE = $(shell find -iname "*.hpp")
 
 CC = c++
