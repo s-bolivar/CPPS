@@ -1,4 +1,4 @@
-EXEC = Serialize
+EXEC = Base
 INCLUDE = $(shell find -iname "*.hpp")
 
 CC = c++

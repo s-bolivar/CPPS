@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 22:45:03 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/21 15:52:34 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/10 12:37:48 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void ScalarConverter::convert(const std::string &str)
             toSpecial(str);
             break;
         default:
-            std::cout << "me cago en los muertos del payo que me ha robao el gallo" << std::endl;
+            std::cout << "Error" << std::endl;
             break;
     }
 }
