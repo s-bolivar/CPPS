@@ -4,7 +4,10 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <exception>
 #include <iomanip>
+#include <climits>
+#include <limits>
 
 enum types
 {
@@ -25,6 +28,11 @@ class ScalarConverter
         ~ScalarConverter();
     public:
         static void convert(const std::string &);
+    class OverflowExeption: public std::exception
+    {
+        public:
+            const char *what() const throw();
+    };
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 22:45:03 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/04/10 12:37:48 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/11 02:01:04 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,66 @@ void toSpecial(std::string str)
 
 void toFloat(std::string str)
 {
-    float n = atof(str.c_str());
-    printChar(static_cast<char>(n), true);
-    printInt(static_cast<int>(n), true);
-    printDouble(static_cast<double>(n), true);
-    printFloat(n, true);
+    char* end;
+    long val = std::strtol(str.c_str(), &end, 10);
+
+    bool out_int = (val > INT_MAX || val < INT_MIN);
+
+    if (val >= CHAR_MIN && val <= CHAR_MAX)
+        printChar(static_cast<char>(val), true);
+    else
+        printChar(0, false);
+    if (out_int)
+        printInt(0, false);
+    else
+        printInt(static_cast<int>(val), true);
+    float f = std::strtof(str.c_str(), &end);
+    if (val > std::numeric_limits<float>::max() ||
+    val < -std::numeric_limits<float>::max())
+        printFloat(f, false);
+    else
+        printFloat(f, true);   
+    double d = std::strtod(str.c_str(), &end);
+    if (val > std::numeric_limits<double>::max() ||
+    val < -std::numeric_limits<double>::max())
+        printDouble(d, false);
+    else
+        printDouble(d, true);
 }
 
 void toDouble(std::string str)
 {
-    double n = atof(str.c_str());
-    printChar(static_cast<char>(n), true);
-    printInt(static_cast<int>(n), true);
-    printDouble(n, true);
-    printFloat(static_cast<float>(n), true);
+    char* end;
+    long val = std::strtol(str.c_str(), &end, 10);
+
+    if (*end != '\0')
+    {
+        std::cout << "Error" << std::endl;
+        return ;
+    }
+    bool out_int = (val > INT_MAX || val < INT_MIN);
+
+    if (val >= CHAR_MIN && val <= CHAR_MAX)
+        printChar(static_cast<char>(val), true);
+    else
+        printChar(0, false);
+    
+    if (out_int)
+        printInt(0, false);
+    else
+        printInt(static_cast<int>(val), true);
+    float f = std::strtof(str.c_str(), &end);
+    if (val > std::numeric_limits<float>::max() ||
+    val < -std::numeric_limits<float>::max())
+        printFloat(f, false);
+    else
+        printFloat(f, true);   
+    double d = std::strtod(str.c_str(), &end);
+    if (val > std::numeric_limits<double>::max() ||
+    val < -std::numeric_limits<double>::max())
+        printDouble(d, false);
+    else
+        printDouble(d, true);
 }
 
 void toChar(std::string str)
@@ -93,13 +139,37 @@ void toChar(std::string str)
 
 void toInt(std::string str)
 {
-    int i;
+    char* end;
+    long val = std::strtol(str.c_str(), &end, 10);
 
-    i = atoi(str.c_str());
-    printChar(static_cast<char>(i), true);
-    printInt(i, true);
-    printDouble(static_cast<double>(i), true);
-    printFloat(static_cast<float>(i), true);
+    if (*end != '\0')
+    {
+        std::cout << "Error" << std::endl;
+        return ;
+    }
+    bool out_int = (val > INT_MAX || val < INT_MIN);
+
+    if (val >= CHAR_MIN && val <= CHAR_MAX)
+        printChar(static_cast<char>(val), true);
+    else
+        printChar(0, false);
+    
+    if (out_int)
+        printInt(0, false);
+    else
+        printInt(static_cast<int>(val), true);
+    float f = std::strtof(str.c_str(), &end);
+    if (val > std::numeric_limits<float>::max() ||
+    val < -std::numeric_limits<float>::max())
+        printFloat(f, false);
+    else
+        printFloat(f, true);   
+    double d = std::strtod(str.c_str(), &end);
+    if (val > std::numeric_limits<double>::max() ||
+    val < -std::numeric_limits<double>::max())
+        printDouble(d, false);
+    else
+        printDouble(d, true);
 }
 
 bool    special_case(std::string str)
@@ -107,7 +177,7 @@ bool    special_case(std::string str)
     int i = 0;
     std::string special[5] = {"nan", "nanf", "inf", "+inf", "-inf"};
 
-    while (str != special[i] && !special[i].empty())
+    while (str != special[i] && !special[i].empty() && i < 5)
         i++;
     if (i >= 0 && i < 5)
        return (true);
@@ -188,4 +258,9 @@ void ScalarConverter::convert(const std::string &str)
             std::cout << "Error" << std::endl;
             break;
     }
+}
+
+const char *ScalarConverter::OverflowExeption::what() const throw()
+{
+    return ("Error");
 }
