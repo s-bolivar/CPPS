@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 16:44:01 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/03/28 17:41:20 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:30:44 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void    Span::addNumber(int n)
 int     Span::shortestSpan()
 {
     int res = abs(cont[0] - cont[1]);
-    for (unsigned int i = 0; i < N; i++)
+    for (unsigned int i = 0; i < cont.size(); i++)
     {
         unsigned int j = i + 1;
-        while (j < N)
+        while (j < cont.size())
         {
             if (res > abs(cont[i] - cont[j]))
                 res = abs(cont[i] - cont[j]);
@@ -68,10 +68,10 @@ int     Span::shortestSpan()
 int     Span::longestSpan()
 {
     int res = abs(cont[0] - cont[1]);
-    for (unsigned int i = 0; i < N; i++)
+    for (unsigned int i = 0; i < cont.size(); i++)
     {
         unsigned int j = i + 1;
-        while (j < N)
+        while (j < cont.size())
         {
             if (res < abs(cont[i] - cont[j]))
                 res = abs(cont[i] - cont[j]);
@@ -79,4 +79,14 @@ int     Span::longestSpan()
         }
     }
     return (res);
+}
+
+
+void    Span::addRange(int range)
+{
+    srand(time(NULL));
+    for (; range > 0; range--)
+    {
+        addNumber(rand());
+    }
 }
