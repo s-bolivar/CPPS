@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 15:02:37 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/04/03 01:50:18 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/24 18:35:15 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ bool    parser(std::string op)
 {
     int nums = 0;
     int operators = 0;
-    if (!isdigit(op[0]))
-            return (false);
     for(size_t i = 0; i < op.size(); i++)
     {
         if ((op[i] == '-' || op[i] == '+') && isdigit(op[i + 1]))
