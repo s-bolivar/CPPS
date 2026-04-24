@@ -6,7 +6,7 @@
 /*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 18:10:00 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/04/07 22:22:53 by sbolivar         ###   ########.fr       */
+/*   Updated: 2026/04/24 23:53:44 by sbolivar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ int main(int ac, char **av)
             return 1;
         }
     }
-    std::cout << "before: ";
-    printFirst(av);
+    //std::cout << "before: ";
     PmergeMe    ob(av, ac);
-    ob.organize();
-    std::cout << "after: ";
-    ob.printSecond();
-    ob.printDurations();
+    ob.pmergeme();
+    //printFirst(av);
+    //std::cout << "after: ";
+    //ob.printSecond();
+    //ob.printDurations();
 }
