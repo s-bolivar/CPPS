@@ -1,137 +1,248 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sbolivar <sbolivar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 18:10:39 by sbolivar          #+#    #+#             */
-/*   Updated: 2026/04/25 00:41:33 by sbolivar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe() {}
+PmergeMe::PmergeMe() : _vecTime(0), _deqTime(0) {}
 
-PmergeMe::PmergeMe(char **av, int ac)
-{
-    odd_number = 0;
-    for (int i = 0; i < ac - 1; i++)
-        first.push_back(atoi(av[i + 1]));
-    dit = first.begin() + 1;
-    if (first.size() % 2 == 1)
-        odd_number = first[first.size() - 1];
-    index = 0;
-    n_elements = 1;
-}
+PmergeMe::PmergeMe(const PmergeMe& other)
+    : _vec(other._vec), _deq(other._deq),
+      _vecTime(other._vecTime), _deqTime(other._deqTime) {}
 
-PmergeMe::PmergeMe(const PmergeMe &other)
+PmergeMe& PmergeMe::operator=(const PmergeMe& other)
 {
-    *this = other;
-}
-
-PmergeMe    &PmergeMe::operator=(const PmergeMe &other)
-{
-    if (this != &other)
-    {
-        first = other.first;
-        second = other.second;
-        dit = other.dit;
-        vit = other.vit;
+    if (this != &other) {
+        _vec     = other._vec;
+        _deq     = other._deq;
+        _vecTime = other._vecTime;
+        _deqTime = other._deqTime;
     }
-    return (*this);
+    return *this;
 }
 
 PmergeMe::~PmergeMe() {}
 
-void    PmergeMe::organize()
+void PmergeMe::parseInput(int argc, char** argv)
 {
-    gettimeofday(&dstart, NULL);
-    if (!first_swap)
+    for (int i = 1; i < argc; ++i)
     {
-        for (size_t i = 0; i < first.size(); i++)
+        std::string token(argv[i]);
+        if (token.empty())
+            throw std::invalid_argument("Empty argument");
+        for (size_t j = 0; j < token.size(); ++j)
         {
-            if (first[i] > first[i + 1])
-                std::swap(first[i], first[i + 1]);
-            i++;
+            if (!std::isdigit(static_cast<unsigned char>(token[j])))
+                throw std::invalid_argument("Invalid character in: " + token);
         }
-        n_elements *= 2;
-        first_swap = true;
+        long value;
+        std::istringstream iss(token);
+        if (!(iss >> value) || value <= 0 || value > 2147483647L)
+            throw std::out_of_range("Value out of range: " + token);
+        _vec.push_back(static_cast<int>(value));
+        _deq.push_back(static_cast<int>(value));
     }
-    else
+    if (_vec.empty())
+        throw std::invalid_argument("No input provided");
+}
+
+void PmergeMe::binaryInsertVector(std::vector<int>& sorted, int value) {
+    int lo = 0;
+    int hi = static_cast<int>(sorted.size());
+    while (lo < hi)
     {
-        index = n_elements - 1;
-        for (; index < first.size(); index += n_elements * 2)
+        int mid = lo + (hi - lo) / 2;
+        if (sorted[mid] < value) lo = mid + 1;
+        else                     hi = mid;
+    }
+    sorted.insert(sorted.begin() + lo, value);
+}
+
+void PmergeMe::binaryInsertDeque(std::deque<int>& sorted, int value) {
+    int lo = 0;
+    int hi = static_cast<int>(sorted.size());
+    while (lo < hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+        if (sorted[mid] < value) lo = mid + 1;
+        else                     hi = mid;
+    }
+    sorted.insert(sorted.begin() + lo, value);
+}
+
+std::vector<int> PmergeMe::mergeInsertSortVector(std::vector<int>& arr)
+{
+    int n = static_cast<int>(arr.size());
+    if (n <= 1) return arr;
+
+    bool hasStraggler = (n % 2 != 0);
+    int  straggler    = hasStraggler ? arr[n - 1] : 0;
+    int  pairs        = n / 2;
+
+    std::vector<int> mainChain; mainChain.reserve(pairs);
+    std::vector<int> pending;   pending.reserve(pairs);
+
+    for (int i = 0; i < pairs; ++i)
+    {
+        int a = arr[2 * i], b = arr[2 * i + 1];
+        if (a >= b)
         {
-            size_t left = index - (n_elements - 1);
-            size_t right = left + n_elements;
+            mainChain.push_back(a); pending.push_back(b);
+        }
+        else       
+        {
+            mainChain.push_back(b); pending.push_back(a);
+        }
+    }
+    mainChain = mergeInsertSortVector(mainChain);
+    std::vector<int> sorted = mainChain;
+    binaryInsertVector(sorted, pending[0]);
 
-            if (right + n_elements - 1 >= first.size())
-                break;
+    int pSize = static_cast<int>(pending.size());
+    std::vector<int> jacob;
+    jacob.push_back(1);
+    if (pSize > 1) jacob.push_back(3);
+    while (jacob.back() < pSize)
+    {
+        int next = jacob[jacob.size()-1] + 2 * jacob[jacob.size()-2];
+        jacob.push_back(next);
+    }
+    std::vector<bool> done(pSize, false);
+    done[0] = true; 
 
-            if (first[index] > first[index + n_elements])
+    int prevGroup = 1; 
+    for (size_t g = 1; g < jacob.size(); ++g)
+    {
+        int hi = std::min(jacob[g], pSize) - 1;
+        for (int j = hi; j >= prevGroup; --j)
+        {
+            if (!done[j])
             {
-                for (size_t j = 0; j < n_elements; j++)
-                    std::swap(first[left + j], first[right + j]);
+                binaryInsertVector(sorted, pending[j]);
+                done[j] = true;
             }
         }
-        n_elements *= 2;
-    }   
-    std::cout << "vector 1:";
-    for (size_t i = 0; i < first.size(); i++)
-            std::cout << first[i] << " ";
-    std::cout << std::endl;
-    if (n_elements * 2 < first.size())
-        organize();
-    //gettimeofday(&dend, NULL);
-    //dduration = (dend.tv_sec - dstart.tv_sec) + (dend.tv_usec - dstart.tv_usec);
-    //gettimeofday(&vstart, NULL);
-}
-
-void    PmergeMe::split()
-{
-    for (size_t i = 1; i < first.size(); i += 2)
-            second.push_back(first[i]);
-    std::cout << odd_number << std::endl;
-    while (dit != first.end())
-    {
-        dit = first.erase(dit);
-        if (dit != first.end())
-            dit++;
+        prevGroup = jacob[g];
+        if (prevGroup >= pSize) break;
     }
-    if (odd_number)
+    for (int j = 0; j < pSize; ++j)
+        if (!done[j]) binaryInsertVector(sorted, pending[j]);
+
+    if (hasStraggler)
+        binaryInsertVector(sorted, straggler);
+
+    return sorted;
+}
+
+void PmergeMe::fordJohnsonVector(std::vector<int>& arr)
+{
+    arr = mergeInsertSortVector(arr);
+}
+std::deque<int> PmergeMe::mergeInsertSortDeque(std::deque<int>& arr)
+{
+    int n = static_cast<int>(arr.size());
+    if (n <= 1)
+        return arr;
+
+    bool hasStraggler = (n % 2 != 0);
+    int  straggler    = hasStraggler ? arr[n - 1] : 0;
+    int  pairs        = n / 2;
+
+    std::deque<int> mainChain;
+    std::deque<int> pending;
+
+    for (int i = 0; i < pairs; ++i)
     {
-        first.erase(first.end() - 1);
-        first.push_back(odd_number);
+        int a = arr[2 * i], b = arr[2 * i + 1];
+        if (a >= b)
+        {
+            mainChain.push_back(a); pending.push_back(b);
+        }
+        else
+        {
+            mainChain.push_back(b); pending.push_back(a);
+        }
     }
-    std::cout << "vector 2: ";
-    for (size_t i = 0; i < first.size(); i++)
-            std::cout << first[i] << " ";
-    std::cout << std::endl;
-    std::cout << "vector 2: ";
-    for (size_t i = 0; i < second.size(); i++)
-            std::cout << second[i] << " ";
-    std::cout << std::endl;
-}
 
-void    PmergeMe::printSecond() const
-{
-    for (size_t i = 0; i < second.size(); i++)
+    mainChain = mergeInsertSortDeque(mainChain);
+
+    std::deque<int> sorted = mainChain;
+    binaryInsertDeque(sorted, pending[0]);
+
+    int pSize = static_cast<int>(pending.size());
+
+    std::vector<int> jacob;
+    jacob.push_back(1);
+    if (pSize > 1) jacob.push_back(3);
+    while (jacob.back() < pSize)
     {
-        std::cout << second[i] << " ";
+        int next = jacob[jacob.size()-1] + 2 * jacob[jacob.size()-2];
+        jacob.push_back(next);
     }
-    std::cout << std::endl;    
+
+    std::vector<bool> done(pSize, false);
+    done[0] = true;
+
+    int prevGroup = 1;
+    for (size_t g = 1; g < jacob.size(); ++g)
+    {
+        int hi = std::min(jacob[g], pSize) - 1;
+        for (int j = hi; j >= prevGroup; --j)
+        {
+            if (!done[j])
+            {
+                binaryInsertDeque(sorted, pending[j]);
+                done[j] = true;
+            }
+        }
+        prevGroup = jacob[g];
+        if (prevGroup >= pSize)
+            break;
+    }
+    for (int j = 0; j < pSize; ++j)
+        if (!done[j]) binaryInsertDeque(sorted, pending[j]);
+    if (hasStraggler)
+        binaryInsertDeque(sorted, straggler);
+    return sorted;
 }
 
-void    PmergeMe::pmergeme()
+void PmergeMe::fordJohnsonDeque(std::deque<int>& arr)
 {
-    organize();
-    split();
+    arr = mergeInsertSortDeque(arr);
 }
 
-void    PmergeMe::printDurations() const
+static double getTimeMicros()
 {
-    std::cout << "time to process: " << dduration << " microsegundos" << std::endl;
-    std::cout << "time to process: " << vduration << " microsegundos" << std::endl;
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return static_cast<double>(ts.tv_sec) * 1e6
+         + static_cast<double>(ts.tv_nsec) / 1e3;
 }
+
+void PmergeMe::sort()
+{
+    std::deque<int> origDeq(_deq); 
+    double start = getTimeMicros();
+    fordJohnsonVector(_vec);
+    double end = getTimeMicros();
+    _vecTime = end - start;
+    _deq = origDeq;
+    start = getTimeMicros();
+    fordJohnsonDeque(_deq);
+    end = getTimeMicros();
+    _deqTime = end - start;
+}
+
+void PmergeMe::display() const
+{
+    for (size_t i = 0; i < _vec.size(); ++i) {
+        if (i) std::cout << " ";
+        std::cout << _vec[i];
+    }
+    std::cout << "\n";
+}
+
+double PmergeMe::getVecTime() const
+{
+    return _vecTime;
+}
+double PmergeMe::getDeqTime() const
+{
+    return _deqTime;
+} 

@@ -2,44 +2,42 @@
 #define PMERGEME_HPP
 
 #include <vector>
-#include <unistd.h>
 #include <deque>
-#include <iostream>
-#include <cstdlib>
 #include <string>
+#include <stdexcept>
+#include <iostream>
+#include <sstream>
 #include <algorithm>
-#include <sys/time.h>
+#include <ctime>
+#include <time.h>
+#include <iomanip>
+#include <cctype>
 
-class PmergeMe
-{
-    private:
-        timeval dstart;
-        timeval dend;
-        int     odd_number;
-        bool    first_swap;
-        double dduration;
-        size_t  index;
-        size_t  n_elements;
-        timeval vstart;
-        timeval vend;
-        double vduration;
-        std::deque<int>     first;
-        std::vector<int>    second;
-        std::deque<int>::iterator   dit;
-        std::vector<int>::iterator  vit;
-    public:
-        PmergeMe();
-        PmergeMe(char **, int);
-        PmergeMe(const PmergeMe &);
-        PmergeMe    &operator=(const PmergeMe &);
-        ~PmergeMe();
-        void    insertionPhase();
-        void    pmergeme();
-        void    binaryInsert(int);
-        void    organize();
-        void    split();
-        void    printSecond() const;
-        void    printDurations() const;
+class PmergeMe {
+public:
+    PmergeMe();
+    PmergeMe(const PmergeMe& other);
+    PmergeMe& operator=(const PmergeMe& other);
+    ~PmergeMe();
+
+    void   parseInput(int argc, char** argv);
+    void   sort();
+    void   display() const;
+
+    double getVecTime() const;
+    double getDeqTime() const;
+
+private:
+    std::vector<int> _vec;
+    std::deque<int>  _deq;
+    double           _vecTime;
+    double           _deqTime;
+    void             fordJohnsonVector(std::vector<int>& arr);
+    std::vector<int> mergeInsertSortVector(std::vector<int>& arr);
+    void             binaryInsertVector(std::vector<int>& sorted, int value);
+    void            fordJohnsonDeque(std::deque<int>& arr);
+    std::deque<int> mergeInsertSortDeque(std::deque<int>& arr);
+    void            binaryInsertDeque(std::deque<int>& sorted, int value);
 };
 
 #endif
